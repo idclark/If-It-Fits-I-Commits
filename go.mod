@@ -7,6 +7,9 @@ require (
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/stretchr/testify v1.7.0
 	github.com/tysontate/gommap v0.0.0-20210506040252-ef38c88b18e1
+	go.opencensus.io v0.22.2 // indirect
+	go.uber.org/multierr v1.7.0 // indirect
+	go.uber.org/zap v1.10.0 // indirect
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
 	golang.org/x/net v0.0.0-20210316092652-d523dce5a7f4 // indirect
 	golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4 // indirect
