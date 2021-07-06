@@ -1,12 +1,15 @@
 package log
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
 	"time"
 
 	"github.com/hashicorp/raft"
 	raftboltdb "github.com/hashicorp/raft-boltdb"
+	api "github.com/idclark/ifitfitsicommits/api/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 type DistributedLog struct {
@@ -121,4 +124,53 @@ func (l *DistributedLog) setupRaft(dataDir string) error {
 		err = l.raft.BootstrapCluster(config).Error()
 	}
 	return err
+}
+
+// Log API
+func (l *DistributedLog) Append(record *api.Record) (uint64, error) {
+	res, err := l.apply(
+		AppendRequestType,
+		&api.ProduceRequest{Record: record},
+	)
+	if err != nil {
+		return 0, err
+	}
+	return res.(*api.ProduceResponse).Offset, nil
+}
+
+// apply wraps Raft's API to apply requests and return their response.
+// Even though we only have 1 request type (append), it can be extended to others.
+func (l *DistributedLog) apply(reqType RequestType, req proto.Message) (
+	interface{},
+	error,
+) {
+	var buf bytes.Buffer
+	_, err := buf.Write([]byte{byte(reqType)})
+	if err != nil {
+		return nil, err
+	}
+	b, err := proto.Marshal(req)
+	if err != nil {
+		return nil, err
+	}
+	_, err = buf.Write(b)
+	if err != nil {
+		return nil, err
+	}
+	timeout := 10 * time.Second
+	future := l.raft.Apply(buf.Bytes(), timeout)
+	if future.Error() != nil {
+		return nil, future.Error()
+	}
+	res := future.Response()
+	if err, ok := res.(error); ok {
+		return nil, err
+	}
+	return res, nil
+}
+
+// Read: we don't go through Raft cuz eventually consistency- we can be relaxed.
+// If we really needed strong consistency this would need Raft, but it be "slower".
+func (l *DistributedLog) Read(offset uint64) (*api.Record, error) {
+	return l.log.Read(offset)
 }
