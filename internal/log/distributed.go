@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/raft"
-	raftboltdb "github.com/influxdata/raft-boltdb"
+	raftboltdb "github.com/hashicorp/raft-boltdb"
 )
 
 type DistributedLog struct {
