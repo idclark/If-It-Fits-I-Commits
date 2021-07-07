@@ -10,10 +10,10 @@ import (
 	"time"
 
 	"github.com/hashicorp/raft"
+	api "github.com/idclark/ifitfitsicommits/api/v1"
+	"github.com/idclark/ifitfitsicommits/internal/log"
 	"github.com/stretchr/testify/require"
 	"github.com/travisjeffery/go-dynaport"
-	api "github.com/travisjeffery/proglog/api/v1"
-	"github.com/travisjeffery/proglog/internal/log"
 )
 
 func TestMultipleNodes(t *testing.T) {
@@ -40,7 +40,6 @@ func TestMultipleNodes(t *testing.T) {
 		config.Raft.ElectionTimeout = 50 * time.Millisecond
 		config.Raft.LeaderLeaseTimeout = 50 * time.Millisecond
 		config.Raft.CommitTimeout = 5 * time.Millisecond
-
 
 		if i == 0 {
 			config.Raft.Bootstrap = true
@@ -106,4 +105,3 @@ func TestMultipleNodes(t *testing.T) {
 	require.Equal(t, []byte("third"), record.Value)
 	require.Equal(t, off, record.Offset)
 }
-

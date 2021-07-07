@@ -9,6 +9,7 @@ require (
 	github.com/hashicorp/raft-boltdb v0.0.0-20210422161416-485fa74b0b01
 	github.com/hashicorp/serf v0.9.5 // indirect
 	github.com/stretchr/testify v1.7.0
+	github.com/travisjeffery/go-dynaport v1.0.0 // indirect
 	github.com/tysontate/gommap v0.0.0-20210506040252-ef38c88b18e1
 	go.opencensus.io v0.22.2 // indirect
 	go.uber.org/multierr v1.7.0 // indirect
