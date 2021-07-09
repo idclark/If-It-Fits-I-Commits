@@ -1,3 +1,5 @@
+// Package log : Replicator. This is now obsolete as log replication is handled via
+// Raft multiplexing with our RPC service. Leaving here for posterity.
 package log
 
 import (
@@ -22,7 +24,6 @@ type Replicator struct {
 	close   chan struct{}
 }
 
-
 func (r *Replicator) Join(name, addr string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -42,7 +43,6 @@ func (r *Replicator) Join(name, addr string) error {
 
 	return nil
 }
-
 
 func (r *Replicator) replicate(addr string, leave chan struct{}) {
 	cc, err := grpc.Dial(addr, r.DialOptions...)
@@ -97,7 +97,6 @@ func (r *Replicator) replicate(addr string, leave chan struct{}) {
 	}
 }
 
-
 func (r *Replicator) Leave(name string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -110,7 +109,6 @@ func (r *Replicator) Leave(name string) error {
 	return nil
 }
 
-
 func (r *Replicator) init() {
 	if r.logger == nil {
 		r.logger = zap.L().Named("replicator")
@@ -122,7 +120,6 @@ func (r *Replicator) init() {
 		r.close = make(chan struct{})
 	}
 }
-
 
 func (r *Replicator) Close() error {
 	r.mu.Lock()
@@ -137,7 +134,6 @@ func (r *Replicator) Close() error {
 	return nil
 }
 
-
 func (r *Replicator) logError(err error, msg, addr string) {
 	r.logger.Error(
 		msg,
@@ -145,4 +141,3 @@ func (r *Replicator) logError(err error, msg, addr string) {
 		zap.Error(err),
 	)
 }
-
