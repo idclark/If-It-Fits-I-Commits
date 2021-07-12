@@ -1,3 +1,7 @@
+// package log provides the foundation for the distributed commit log.
+// records are individual pieces of data that reside in the store(file).
+// segments are abstractions that tie together records and an index.
+// the log is an abstraction that ties all the segments together.
 package log
 
 import (
@@ -9,8 +13,10 @@ import (
 
 var enc = binary.BigEndian
 
+// the size in bytes of a record
 const lenWidth = 8
 
+// store is a simple wrapper around a file with two API to read and append bytes
 type store struct {
 	*os.File
 	mu   sync.Mutex
@@ -31,6 +37,8 @@ func newStore(f *os.File) (*store, error) {
 	}, nil
 }
 
+// Append persists the given record to the store.
+// return the number of bytes written and it's position in the store for the index.
 func (s *store) Append(p []byte) (n uint64, pos uint64, err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -47,6 +55,7 @@ func (s *store) Append(p []byte) (n uint64, pos uint64, err error) {
 	return uint64(w), pos, nil
 }
 
+// Read returns a base64 encoded []byte record for the given position in the store.
 func (s *store) Read(pos uint64) ([]byte, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()

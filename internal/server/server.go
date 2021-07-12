@@ -1,3 +1,4 @@
+// package server provides a RPC server and proto defs for the commit log service
 package server
 
 import (
@@ -24,7 +25,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-
 type Config struct {
 	CommitLog  CommitLog
 	Authorizer Authorizer
@@ -35,7 +35,6 @@ const (
 	produceAction  = "produce"
 	consumeAction  = "consume"
 )
-
 
 var _ api.LogServer = (*grpcServer)(nil)
 
@@ -111,7 +110,6 @@ func (s *grpcServer) Produce(ctx context.Context, req *api.ProduceRequest) (
 	return &api.ProduceResponse{Offset: offset}, nil
 }
 
-
 func (s *grpcServer) Consume(ctx context.Context, req *api.ConsumeRequest) (
 	*api.ConsumeResponse, error) {
 	if err := s.Authorizer.Authorize(
@@ -127,7 +125,6 @@ func (s *grpcServer) Consume(ctx context.Context, req *api.ConsumeRequest) (
 	}
 	return &api.ConsumeResponse{Record: record}, nil
 }
-
 
 func (s *grpcServer) ProduceStream(stream api.Log_ProduceStreamServer) error {
 	for {
@@ -170,17 +167,14 @@ func (s *grpcServer) ConsumeStream(
 	}
 }
 
-
 type CommitLog interface {
 	Append(*api.Record) (uint64, error)
 	Read(uint64) (*api.Record, error)
 }
 
-
 type Authorizer interface {
 	Authorize(subject, object, action string) error
 }
-
 
 func authenticate(ctx context.Context) (context.Context, error) {
 	peer, ok := peer.FromContext(ctx)
@@ -207,4 +201,3 @@ func subject(ctx context.Context) string {
 }
 
 type subjectContextKey struct{}
-

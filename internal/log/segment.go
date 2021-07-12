@@ -1,3 +1,7 @@
+// package log provides the foundation for the distributed commit log.
+// records are individual pieces of data that reside in the store(file).
+// segments are abstractions that tie together records and an index.
+// the log is an abstraction that ties all the segments together.
 package log
 
 import (
@@ -10,11 +14,12 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+// segment wraps the index and store types, coordinating across the two.
 type segment struct {
 	store                  *store
 	index                  *index
 	baseOffset, nextOffset uint64
-	config                 Config
+	config                 Config // lets us know when the segment is maxed out.
 }
 
 func newSegment(dir string, baseOffset uint64, c Config) (*segment, error) {
@@ -53,6 +58,7 @@ func newSegment(dir string, baseOffset uint64, c Config) (*segment, error) {
 	return s, nil
 }
 
+// Append writes the record to the segment and returns the offset.
 func (s *segment) Append(record *api.Record) (offset uint64, err error) {
 	cur := s.nextOffset
 	record.Offset = cur
@@ -117,6 +123,8 @@ func (s *segment) Remove() error {
 	return nil
 }
 
+// nearestMultiple returns the nearest and lesser multiple of k in j.
+// nearestMultiple(9,4) == 8. take the lesser multiple to stay under disk capacity.
 func nearestMultiple(j, k uint64) uint64 {
 	if j >= 0 {
 		return (j / k) * k

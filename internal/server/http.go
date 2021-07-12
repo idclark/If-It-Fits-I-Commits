@@ -1,3 +1,10 @@
+/* Package server is a POC json/http commit log service that accepts and responds
+   with json and stores those records in an in-memory log.
+
+   curl -XPOST localhost:8080 -d '{"record": {"value": "TGV0J3MgR28gIzEK"}}'
+
+   Go's encoding/json package encodes []byte as a base64-encoded string. The records value is a []byte, so that's why the request has a base64 encoded format
+*/
 package server
 
 import (

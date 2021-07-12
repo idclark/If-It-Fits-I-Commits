@@ -1,3 +1,7 @@
+// package log provides the foundation for the distributed commit log.
+// records are individual pieces of data that reside in the store(file).
+// segments are abstractions that tie together records and an index.
+// the log is an abstraction that ties all the segments together.
 package log
 
 import (
@@ -7,12 +11,14 @@ import (
 	"github.com/tysontate/gommap"
 )
 
+// entWidth jumps straight to the position of an entry given its offset.
 var (
 	offWidth uint64 = 4
 	posWidth uint64 = 8
 	entWidth        = offWidth + posWidth
 )
 
+// index defines the index file as a persisted file and a memory-mapped file.
 type index struct {
 	file *os.File
 	mmap gommap.MMap
@@ -43,6 +49,7 @@ func NewIndex(f *os.File, c Config) (*index, error) {
 	return idx, nil
 }
 
+// Close ensures the mmapped file has synced its data to the persisted file and flushed to stable storage.
 func (i *index) Close() error {
 	if err := i.mmap.Sync(gommap.MS_SYNC); err != nil {
 		return err

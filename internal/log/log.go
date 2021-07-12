@@ -1,3 +1,7 @@
+// package log provides the foundation for the distributed commit log.
+// records are individual pieces of data that reside in the store(file).
+// segments are abstractions that tie together records and an index.
+// the log is an abstraction that ties all the segments together.
 package log
 
 import (
@@ -13,6 +17,7 @@ import (
 	api "github.com/idclark/ifitfitsicommits/api/v1"
 )
 
+// Log manages the list of segments
 type Log struct {
 	mu sync.RWMutex
 
@@ -38,6 +43,7 @@ func NewLog(dir string, c Config) (*Log, error) {
 	return l, l.setup()
 }
 
+// setup when a log starts it's responsible for setting up for the active segments that exist on disk, or bootstrapping the initial segment.
 func (l *Log) setup() error {
 	files, err := ioutil.ReadDir(l.Dir)
 	if err != nil {
@@ -73,6 +79,7 @@ func (l *Log) setup() error {
 	return nil
 }
 
+// Append write a record to the log, which writes to the activeSegment
 func (l *Log) Append(record *api.Record) (uint64, error) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
@@ -112,6 +119,7 @@ func (l *Log) newSegment(off uint64) error {
 	return nil
 }
 
+// Close iterates over segments and closes them.
 func (l *Log) Close() error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
@@ -123,6 +131,7 @@ func (l *Log) Close() error {
 	return nil
 }
 
+// Remove closes the log and then removes the data.
 func (l *Log) Remove() error {
 	if err := l.Close(); err != nil {
 		return err
@@ -130,6 +139,7 @@ func (l *Log) Remove() error {
 	return os.RemoveAll(l.Dir)
 }
 
+// Reset removes the log and creates a new one to replace it.
 func (l *Log) Reset() error {
 	if err := l.Remove(); err != nil {
 		return err
@@ -170,6 +180,7 @@ func (l *Log) Truncate(lowest uint64) error {
 	return nil
 }
 
+// Reader return io.Reader to read the whole log. Needed for coordinated consensus.
 func (l *Log) Reader() io.Reader {
 	l.mu.RLock()
 	defer l.mu.RUnlock()
