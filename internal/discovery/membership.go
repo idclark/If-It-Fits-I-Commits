@@ -1,3 +1,4 @@
+// package discovery provides embedded service discovery and consensus via serf and raft respectively
 package discovery
 
 import (

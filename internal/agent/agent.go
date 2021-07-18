@@ -1,3 +1,4 @@
+// package agent provides and `Agent` which serves as command and control for the cluster status, members, and replication.
 package agent
 
 import (
@@ -56,6 +57,7 @@ func (c Config) RPCAddr() (string, error) {
 	return fmt.Sprintf("%s:%d", host, c.RPCPort), nil
 }
 
+// creates an Agent and runs a set of methods to setup and run the agent's components
 func New(config Config) (*Agent, error) {
 	a := &Agent{
 		Config:    config,
@@ -179,6 +181,7 @@ func (a *Agent) setupMembership() error {
 	return err
 }
 
+// notifies other servers of shutdown, stops replication, stops rpc service and closes the log
 func (a *Agent) Shutdown() error {
 	a.shutdownLock.Lock()
 	defer a.shutdownLock.Unlock()
