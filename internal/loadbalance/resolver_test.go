@@ -11,10 +11,10 @@ import (
 	"google.golang.org/grpc/resolver"
 	"google.golang.org/grpc/serviceconfig"
 
+	"github.com/idclark/ifitfitsisits/internal/config"
+	"github.com/idclark/ifitfitsisits/internal/loadbalance"
+	"github.com/idclark/ifitfitsisits/internal/server"
 	api "github.com/idclark/ifitfitsitisits/api/v1"
-	"github.com/idclark/ifitfitsitisits/internal/loadbalance"
-	"github.com/idclark/ifitfitsitisits/internal/config"
-	"github.com/idclark/ifitfitsitisits/internal/server"
 )
 
 func TestResolver(t *testing.T) {
@@ -32,7 +32,7 @@ func TestResolver(t *testing.T) {
 	serverCreds := credentials.NewTLS(tlsConfig)
 
 	srv, err := server.NewGRPCServer(&server.Config{
-		GetServerer: &getServers{}, 
+		GetServerer: &getServers{},
 	}, grpc.Creds(serverCreds))
 	require.NoError(t, err)
 
@@ -77,7 +77,6 @@ func TestResolver(t *testing.T) {
 	require.Equal(t, wantState, conn.state)
 }
 
-
 type getServers struct{}
 
 func (s *getServers) GetServers() ([]*api.Server, error) {
@@ -111,4 +110,3 @@ func (c *clientConn) ParseServiceConfig(
 ) *serviceconfig.ParseResult {
 	return nil
 }
-

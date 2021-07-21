@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/resolver"
 	"google.golang.org/grpc/serviceconfig"
 
-	api "github.com/idclark/ifitfitsitisits/api/v1"
+	api "github.com/idclark/ifitfitsisits/api/v1"
 )
 
 type Resolver struct {
@@ -60,7 +60,6 @@ func init() {
 	resolver.Register(&Resolver{})
 }
 
-
 var _ resolver.Resolver = (*Resolver)(nil)
 
 func (r *Resolver) ResolveNow(resolver.ResolveNowOptions) {
@@ -101,4 +100,3 @@ func (r *Resolver) Close() {
 		)
 	}
 }
-

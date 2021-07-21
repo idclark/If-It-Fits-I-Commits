@@ -10,7 +10,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/idclark/ifitfitsitisits/internal/loadbalance"
+	"github.com/idclark/ifitfitsisits/internal/loadbalance"
 )
 
 func TestPickerNoSubConnAvailable(t *testing.T) {
@@ -27,7 +27,6 @@ func TestPickerNoSubConnAvailable(t *testing.T) {
 		require.Nil(t, result.SubConn)
 	}
 }
-
 
 func TestPickerProducesToLeader(t *testing.T) {
 	picker, subConns := setupTest()
@@ -52,7 +51,6 @@ func TestPickerConsumesFromFollowers(t *testing.T) {
 		require.Equal(t, subConns[i%2+1], pick.SubConn)
 	}
 }
-
 
 func setupTest() (*loadbalance.Picker, []*subConn) {
 	var subConns []*subConn
@@ -84,4 +82,3 @@ func (s *subConn) UpdateAddresses(addrs []resolver.Address) {
 }
 
 func (s *subConn) Connect() {}
-
