@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/resolver"
 	"google.golang.org/grpc/serviceconfig"
 
-	api "github.com/idclark/ifitfitsisits/api/v1"
+	api "github.com/idclark/ifitfitsicommits/api/v1"
 )
 
 type Resolver struct {
