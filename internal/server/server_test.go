@@ -14,18 +14,18 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/status"
 
+	"flag"
 	"os"
 	"time"
-	"flag"
 
 	"go.opencensus.io/examples/exporter"
-	
+
 	"go.uber.org/zap"
 
 	api "github.com/idclark/ifitfitsicommits/api/v1"
-	"github.com/travisjeffery/proglog/internal/auth"
-	"github.com/travisjeffery/proglog/internal/config"
-	"github.com/travisjeffery/proglog/internal/log"
+	"github.com/idclark/ifitfitsicommits/internal/auth"
+	"github.com/idclark/ifitfitsicommits/internal/config"
+	"github.com/idclark/ifitfitsicommits/internal/log"
 )
 
 // imports...
@@ -43,7 +43,6 @@ func TestMain(m *testing.M) {
 	}
 	os.Exit(m.Run())
 }
-
 
 func TestServer(t *testing.T) {
 	for scenario, fn := range map[string]func(
