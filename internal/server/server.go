@@ -168,12 +168,12 @@ func (s *grpcServer) ConsumeStream(
 	}
 }
 
-func (s *grpcServer) GetServers(ctx context.Context, req *api.GetServerRequest) (*api.GetServerResponse, error) {
+func (s *grpcServer) GetServers(ctx context.Context, req *api.GetServersRequest) (*api.GetServersResponse, error) {
 	servers, err := s.GetServerer.GetServers()
 	if err != nil {
 		return nil, err
 	}
-	return &api.GetServerResponse{Servers: servers}, nil
+	return &api.GetServersResponse{Servers: servers}, nil
 }
 
 type GetServerer interface {

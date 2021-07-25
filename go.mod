@@ -1,26 +1,28 @@
 module github.com/idclark/ifitfitsicommits
 
-go 1.16
-
 require (
-	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/gorilla/mux v1.8.0 // indirect
-	github.com/hashicorp/raft v1.1.1 // indirect
-	github.com/hashicorp/raft-boltdb v0.0.0-20210422161416-485fa74b0b01
-	github.com/hashicorp/serf v0.9.5 // indirect
-	github.com/stretchr/testify v1.7.0
-	github.com/travisjeffery/go-dynaport v1.0.0 // indirect
-	github.com/tysontate/gommap v0.0.0-20210506040252-ef38c88b18e1
-	go.opencensus.io v0.22.2 // indirect
-	go.uber.org/multierr v1.7.0 // indirect
-	go.uber.org/zap v1.10.0 // indirect
-	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
-	golang.org/x/net v0.0.0-20210316092652-d523dce5a7f4 // indirect
-	golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4 // indirect
-	golang.org/x/text v0.3.5 // indirect
-	golang.org/x/tools v0.1.0 // indirect
-	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
-	google.golang.org/grpc v1.38.0 // indirect
-	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.1.0 // indirect
-	google.golang.org/protobuf v1.26.0 // indirect
+	github.com/casbin/casbin v1.9.1
+	github.com/davecgh/go-spew v1.1.1
+	github.com/golang/protobuf v1.4.1
+	github.com/gorilla/mux v1.7.4
+	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0
+	github.com/hashicorp/raft v1.1.1
+	github.com/hashicorp/raft-boltdb v0.0.0-20191021154308-4207f1bf0617
+	github.com/hashicorp/serf v0.8.5
+	github.com/soheilhy/cmux v0.1.4
+	github.com/stretchr/testify v1.4.0
+	github.com/travisjeffery/go-dynaport v0.0.0-20171218080632-f8768fb615d5
+	github.com/tysontate/gommap v0.0.0-20190103205956-899e1273fb5c
+	go.opencensus.io v0.22.4
+	go.uber.org/zap v1.10.0
+	golang.org/x/net v0.0.0-20190724013045-ca1201d0de80 // indirect
+	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013
+	google.golang.org/grpc v1.32.0
+	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.0.0 // indirect
+	google.golang.org/protobuf v1.25.0
+	launchpad.net/gocheck v0.0.0-20140225173054-000000000087 // indirect
 )
+
+replace github.com/hashicorp/raft-boltdb => github.com/travisjeffery/raft-boltdb v1.0.0
+
+go 1.13
