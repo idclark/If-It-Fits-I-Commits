@@ -11,10 +11,10 @@ import (
 	"google.golang.org/grpc/resolver"
 	"google.golang.org/grpc/serviceconfig"
 
-	"github.com/idclark/ifitfitsisits/internal/config"
-	"github.com/idclark/ifitfitsisits/internal/loadbalance"
-	"github.com/idclark/ifitfitsisits/internal/server"
-	api "github.com/idclark/ifitfitsitisits/api/v1"
+	api "github.com/idclark/ifitfitsicommits/api/v1"
+	"github.com/idclark/ifitfitsicommits/internal/config"
+	"github.com/idclark/ifitfitsicommits/internal/loadbalance"
+	"github.com/idclark/ifitfitsicommits/internal/server"
 )
 
 func TestResolver(t *testing.T) {
