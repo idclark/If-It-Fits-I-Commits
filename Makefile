@@ -77,3 +77,11 @@ compile:
 		--proto_path=.
 
 # END: begin
+
+# START: build_docker
+TAG ?= 0.0.1
+
+build-docker:
+	docker build -t github.com/idclark/ifitfitsicommits:$(TAG) .
+
+# END: build_docker
