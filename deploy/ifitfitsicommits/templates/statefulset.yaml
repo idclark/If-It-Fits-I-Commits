@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "ifitfitsicommits.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: {{ include "ifitfitsicommits.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{ include "ifitfitsicommits.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "ifitfitsicommits.fullname" . }}
+  replicas: {{ .Values.replicas }}
+  template:
+    metadata:
+      name: {{ include "ifitfitsicommits.fullname" . }}
+      labels: {{ include "ifitfitsicommits.labels" . | nindent 8 }}
+    spec:
+      initContainers:
+      - name: {{ include "ifitfitsicommits.fullname" . }}-config-init
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        command:          
+          - /bin/sh
+          - -c
+          - |-
+            ID=$(echo $HOSTNAME | rev | cut -d- -f1 | rev)
+            cat > /var/run/ifitfitsicommits/config.yaml <<EOD
+            data-dir: /var/run/ifitfitsicommits/data
+            rpc-port: {{.Values.rpcPort}}
+            # Make sure the following three key-values are on one line each in
+            # your code. I split them across multiple lines to fit them in
+            # for the book.
+            bind-addr: \
+              "$HOSTNAME.ifitfitsicommits.{{.Release.Namespace}}.\svc.cluster.local:\
+                {{.Values.serfPort}}"
+            bootstrap: $([ $ID = 0 ] && echo true || echo false)
+            $([ $ID != 0 ] && echo 'start-join-addrs: \
+              "ifitfitsicommits-0.ifitfitsicommits.{{.Release.Namespace}}.svc.cluster.local:\
+                {{.Values.serfPort}}"')
+            EOD   
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/run/ifitfitsicommits
+      containers:
+      - name: {{ include "ifitfitsicommits.fullname" . }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.rpcPort }}
+          name: rpc
+        - containerPort: {{ .Values.serfPort }}
+          name: serf
+        args:
+          - --config-file=/var/run/ifitfitsicommits/config.yaml
+        # probes...
+        readinessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.rpcPort }}"]
+          initialDelaySeconds: 10
+        livenessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.rpcPort }}"]
+          initialDelaySeconds: 10
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/run/ifitfitsicommits
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.storage }}
