@@ -26,16 +26,10 @@ spec:
             cat > /var/run/ifitfitsicommits/config.yaml <<EOD
             data-dir: /var/run/ifitfitsicommits/data
             rpc-port: {{.Values.rpcPort}}
-            # Make sure the following three key-values are on one line each in
-            # your code. I split them across multiple lines to fit them in
-            # for the book.
-            bind-addr: \
-              "$HOSTNAME.ifitfitsicommits.{{.Release.Namespace}}.\svc.cluster.local:\
-                {{.Values.serfPort}}"
+
+            bind-addr: "$HOSTNAME.ifitfitsicommits.{{.Release.Namespace}}.\svc.cluster.local: {{.Values.serfPort}}"
             bootstrap: $([ $ID = 0 ] && echo true || echo false)
-            $([ $ID != 0 ] && echo 'start-join-addrs: \
-              "ifitfitsicommits-0.ifitfitsicommits.{{.Release.Namespace}}.svc.cluster.local:\
-                {{.Values.serfPort}}"')
+            $([ $ID != 0 ] && echo 'start-join-addrs: "ifitfitsicommits-0.ifitfitsicommits.{{.Release.Namespace}}.svc.cluster.local: {{.Values.serfPort}}"')
             EOD   
         volumeMounts:
         - name: datadir

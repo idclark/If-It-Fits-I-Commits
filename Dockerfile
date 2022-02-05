@@ -1,9 +1,9 @@
 # START: probes
 # START: beginning
-FROM golang:1.14-alpine AS build
+FROM golang:1.14-buster AS build
 WORKDIR /go/src/ifitfitsicommits
 COPY . .
-RUN CGO_ENABLED=0 go build -o /go/bin/ifitfitsicommits ./cmd/ifitfitsicommits
+RUN CGO_ENABLED=0 go build -o /go/bin/ifitfitsicommits ./cmd/ifitfitsicommits/main.go
 # END: beginning
 # START_HIGHLIGHT
 RUN GRPC_HEALTH_PROBE_VERSION=v0.3.2 && \
