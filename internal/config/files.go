@@ -19,7 +19,6 @@ var (
 	ACLPolicyFile        = configFile("policy.csv")
 )
 
-
 func configFile(filename string) string {
 	if dir := os.Getenv("CONFIG_DIR"); dir != "" {
 		return filepath.Join(dir, filename)
@@ -28,6 +27,5 @@ func configFile(filename string) string {
 	if err != nil {
 		panic(err)
 	}
-	return filepath.Join(homeDir, ".proglog", filename)
+	return filepath.Join(homeDir, ".ifitfitsicommits", filename)
 }
-

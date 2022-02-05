@@ -1,4 +1,5 @@
 *.proto~
+*.yaml~
 Makefile~
 *.go~
 *.gobak*
