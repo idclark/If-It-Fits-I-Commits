@@ -5,7 +5,12 @@
 
 
 #### Motivation
-Intended for learning purposes only. I wanted to gain experience with golang while 
+Intended for learning purposes only. I wanted to gain experience with golang while learning about distributed
+data systems. 
 
-[HashiCorp Serf](https://www.serf.io/intro/index.html)
+Some of the most helpful links:
+* [Martin Kleppmann's class](https://www.cl.cam.ac.uk/teaching/2021/ConcDisSys/dist-sys-notes.pdf)
+* [MIT 6.824](https://www.youtube.com/channel/UC_7WrbZTCODu1o_kfUMq88g/videos)
+* [Travis Jeffrey's book](https://pragprog.com/titles/tjgo/distributed-services-with-go/)
 
+Service discovery is enabled by [HashiCorp Serf](https://www.serf.io/intro/index.html) while consensus across nodes is provided by [HashiCorp Raft](https://github.com/hashicorp/raft). 
