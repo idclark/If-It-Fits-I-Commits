@@ -22,24 +22,3 @@ Service discovery is enabled by [HashiCorp Serf](https://www.serf.io/intro/index
 * Index: File that holds indexes.
 * Segment: Abstraction tying together Indexes and Stores. 
 * Log: Abstraction tying together multiple Segments.
-+-----------------------+---+
-|++++++++++++++++++-----+   |
-|++-----------+---+     |   |
-|+|Record     |   |     |   |
-|++-----------+   |     |   |
-|++-+---------+   |     |   |
-|+| v         |   |     |   |
-|+|Index      |   |     |   |
-|++-----------+   |     |   |
-|+|Store          |     |   |
-|+|               |     |   |
-|++---------------+     |   |
-|| Segment              |   |
-++--------+-------------+   |
-|         |                 |
-|         |1 ... N          |
-|         |                 |
-|         v                 |
-| Log                       |
-|                           |
-+---------------------------+
