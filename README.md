@@ -14,3 +14,32 @@ Some of the most helpful links:
 * [Travis Jeffrey's book](https://pragprog.com/titles/tjgo/distributed-services-with-go/)
 
 Service discovery is enabled by [HashiCorp Serf](https://www.serf.io/intro/index.html) while consensus across nodes is provided by [HashiCorp Raft](https://github.com/hashicorp/raft). 
+
+### Build a Log
+
+* Record: The literal stored data. 
+* Store: File that stores records.
+* Index: File that holds indexes.
+* Segment: Abstraction tying together Indexes and Stores. 
+* Log: Abstraction tying together multiple Segments.
++-----------------------+---+
+|++++++++++++++++++-----+   |
+|++-----------+---+     |   |
+|+|Record     |   |     |   |
+|++-----------+   |     |   |
+|++-+---------+   |     |   |
+|+| v         |   |     |   |
+|+|Index      |   |     |   |
+|++-----------+   |     |   |
+|+|Store          |     |   |
+|+|               |     |   |
+|++---------------+     |   |
+|| Segment              |   |
+++--------+-------------+   |
+|         |                 |
+|         |1 ... N          |
+|         |                 |
+|         v                 |
+| Log                       |
+|                           |
++---------------------------+
